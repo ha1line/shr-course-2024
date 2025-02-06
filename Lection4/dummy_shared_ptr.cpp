@@ -18,7 +18,6 @@ public:
         m_ptr(new int(num)),
         m_counter(new size_t(1))
     {
-        ++(*m_counter);
     }
 
     // Copy constructor
@@ -36,15 +35,17 @@ public:
         {
             if (m_ptr != o.m_ptr)
             {
-                if (*m_counter == 1)
+                if (--(*m_counter) == 0)
                 {
                     delete m_ptr;
                     delete m_counter;
                 }
-                --(*m_counter);
-                m_counter = o.m_counter;
                 m_ptr = o.m_ptr;
-                ++(*m_counter);
+                m_counter = o.m_counter;
+                if (m_counter)
+                {
+                    ++(*m_counter);
+                }
 
                 return *this;
             }
@@ -90,7 +91,7 @@ private:
     }
 private:
     int* m_ptr = nullptr;
-    size_t* m_counter = 0;
+    size_t* m_counter = nullptr;
 };
 
 // Если counter размещен на стеке, то при обращении и работе с PointerToInt мы получим UB
