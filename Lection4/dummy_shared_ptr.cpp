@@ -25,7 +25,10 @@ public:
     {
         m_ptr = o.m_ptr;
         m_counter = o.m_counter;
-        ++(*m_counter);
+        if (m_counter)
+        {
+            ++(*m_counter);
+        }
     }
 
     // Copy assignment operator
@@ -82,7 +85,7 @@ public:
             delete m_ptr;
             delete m_counter;
         }
-        --m_counter;
+        --(*m_counter);
     }
 private:
     void swap(PointerToInt copy)
